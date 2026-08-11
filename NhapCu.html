@@ -1,0 +1,1521 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NQA - HTTH</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f4f6;
+            color: #222;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.08);
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 0;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
+        }
+
+        /* =========================
+           HƯỚNG XỬ LÝ
+        ========================= */
+
+        .result {
+            margin-top: 25px;
+            padding: 22px;
+            border-radius: 12px;
+            background: #eef7ff;
+            border-left: 6px solid #1677ff;
+        }
+
+            .result h2 {
+                margin-top: 0;
+            }
+
+        .case {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .action {
+            font-size: 17px;
+            line-height: 1.6;
+        }
+
+        .formula {
+            margin-top: 15px;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .warning {
+            margin-top: 15px;
+            padding: 12px;
+            background: #fff4d6;
+            border-radius: 8px;
+            color: #805b00;
+        }
+
+        .success {
+            margin-top: 15px;
+            padding: 12px;
+            background: #e8f8ee;
+            border-radius: 8px;
+            color: #176b36;
+        }
+
+        /* =========================
+           KHU VỰC TÍNH GIÁ
+        ========================= */
+
+        .calculator {
+            margin-top: 25px;
+            padding: 22px;
+            background: #fafafa;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+        }
+
+            .calculator h2 {
+                margin-top: 0;
+            }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .money-input {
+            position: relative;
+        }
+
+            .money-input input {
+                padding-right: 50px;
+            }
+
+            .money-input span {
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #777;
+                font-size: 14px;
+            }
+
+        .calculate-btn {
+            margin-top: 18px;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 9px;
+            background: #1677ff;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+            .calculate-btn:hover {
+                background: #095dcc;
+            }
+
+        /* =========================
+           GIÁ NHẬP LẠI
+        ========================= */
+
+        .final-price {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 12px;
+            background: #e8f8ee;
+            text-align: center;
+        }
+
+            .final-price .title {
+                font-size: 16px;
+                color: #176b36;
+            }
+
+            .final-price .price {
+                font-size: 32px;
+                font-weight: bold;
+                color: #0b7a36;
+                margin-top: 8px;
+            }
+
+        .calculation-detail {
+            margin-top: 12px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* =========================
+           NHỚ NHANH
+        ========================= */
+
+        .quick {
+            margin-top: 25px;
+        }
+
+            .quick h3 {
+                margin-bottom: 12px;
+            }
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .quick-item {
+            background: #f7f7f7;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .reset {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #333;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+            .reset:hover {
+                background: #111;
+            }
+
+        @media (max-width: 650px) {
+
+            .form-grid,
+            .calculator-grid,
+            .quick-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                margin: 10px auto;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <h1>Tra nhanh giá nhập lại</h1>
+
+            <div class="subtitle">
+                Chọn điều kiện → xem hướng xử lý → nhập giá → tính giá nhập lại
+            </div>
+
+
+            <!-- =====================================================
+                 PHẦN 1: CHỌN ĐIỀU KIỆN
+            ====================================================== -->
+
+            <div class="form-grid">
+
+                <div class="field">
+                    <label>1. Tình trạng bảo hành</label>
+
+                    <select id="baoHanh">
+                        <option value="">-- Chọn --</option>
+
+                        <option value="none">
+                            Không mua BHMR
+                        </option>
+
+                        <option value="buy">
+                            Khách mua BHMR
+                        </option>
+
+                        <option value="gift">
+                            Được tặng BHMR
+                        </option>
+
+                        <option value="add">
+                            Chỉ thêm tiền để có BH 1 đổi 1
+                        </option>
+                    </select>
+                </div>
+
+
+                <div class="field">
+                    <label>2. Bán lại sau bao nhiêu ngày?</label>
+
+                    <input type="number"
+                           id="days"
+                           min="1"
+                           placeholder="Ví dụ: 5">
+                </div>
+
+
+                <div class="field">
+                    <label>3. Hình thức</label>
+
+                    <select id="type">
+                        <option value="">-- Chọn --</option>
+
+                        <option value="sell">
+                            Bán lại máy
+                        </option>
+
+                        <option value="upgrade">
+                            Lên đời máy khác
+                        </option>
+                    </select>
+                </div>
+
+
+                <div class="field">
+                    <label>4. Có nâng cấp gói BH?</label>
+
+                    <select id="upgradeBH">
+
+                        <option value="no">
+                            Không
+                        </option>
+
+                        <option value="yes">
+                            Có nâng cấp
+                        </option>
+
+                    </select>
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 PHẦN 2: HƯỚNG XỬ LÝ
+            ====================================================== -->
+
+            <div id="result" class="result">
+
+                <h2>📌 Hướng xử lý</h2>
+
+                <div id="case" class="case">
+                    Hãy chọn các điều kiện ở trên.
+                </div>
+
+                <div id="action" class="action">
+                    Hệ thống sẽ tự xác định trường hợp.
+                </div>
+
+                <div id="formula" class="formula hidden"></div>
+
+                <div id="warning" class="warning hidden"></div>
+
+                <div id="success" class="success hidden"></div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 PHẦN 3: TÍNH GIÁ
+            ====================================================== -->
+
+            <div id="calculator" class="calculator hidden">
+
+                <h2>Tính giá nhập lại</h2>
+
+                <div class="calculator-grid">
+
+                    <!-- Giá máy MIN -->
+
+                    <div class="field"
+                         id="fieldGiaMin">
+
+                        <label>Giá máy MIN</label>
+
+                        <div class="money-input">
+
+                            <input type="number"
+                                   id="giaMin"
+                                   min="0"
+                                   placeholder="Ví dụ: 10000000">
+
+                            <span>đ</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Giá thanh toán SEP -->
+
+                    <div class="field"
+                         id="fieldSep">
+
+                        <label>Giá thanh toán trên SEP</label>
+
+                        <div class="money-input">
+
+                            <input type="number"
+                                   id="giaSep"
+                                   min="0"
+                                   placeholder="Ví dụ: 8000000">
+
+                            <span>đ</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Phần trăm -->
+
+                    <div class="field">
+
+                        <label>Mức trừ</label>
+
+                        <select id="phanTram">
+
+                            <option value="30">
+                                30%
+                            </option>
+
+                            <option value="20" selected>
+                                20%
+                            </option>
+
+                            <option value="15">
+                                15%
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- Giá BH -->
+
+                    <div class="field"
+                         id="fieldBaoHanhGia">
+
+                        <label id="labelBaoHanhGia">
+                            Giá gói BH
+                        </label>
+
+                        <div class="money-input">
+
+                            <input type="number"
+                                   id="giaBaoHanh"
+                                   min="0"
+                                   placeholder="Ví dụ: 1000000">
+
+                            <span>đ</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Phí nâng cấp -->
+
+                    <div class="field hidden"
+                         id="fieldNangCap">
+
+                        <label>
+                            Phí nâng cấp
+                        </label>
+
+                        <div class="money-input">
+
+                            <input type="number"
+                                   id="phiNangCap"
+                                   min="0"
+                                   placeholder="Ví dụ: 400000">
+
+                            <span>đ</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Tiền khách thêm -->
+
+                    <div class="field hidden"
+                         id="fieldKhachThem">
+
+                        <label>
+                            Tiền khách chi thêm
+                        </label>
+
+                        <div class="money-input">
+
+                            <input type="number"
+                                   id="tienKhachThem"
+                                   min="0"
+                                   placeholder="Ví dụ: 400000">
+
+                            <span>đ</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button class="calculate-btn"
+                        onclick="tinhGia()">
+
+                    TÍNH GIÁ NHẬP LẠI
+
+                </button>
+
+
+                <!-- KẾT QUẢ TÍNH -->
+
+                <div id="finalPrice"
+                     class="final-price hidden">
+
+                    <div class="title">
+                        GIÁ NHẬP LẠI
+                    </div>
+
+                    <div id="price"
+                         class="price">
+                        0đ
+                    </div>
+
+                    <div id="calculationDetail"
+                         class="calculation-detail">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RESET -->
+
+            <button class="reset"
+                    onclick="resetForm()">
+
+                🔄 Làm lại
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+    </div>
+
+
+    <script>let currentCase = null;
+
+
+    /* =====================================================
+       LẮNG NGHE THAY ĐỔI
+    ====================================================== */
+
+    const inputs = [
+
+        document.getElementById("baoHanh"),
+
+        document.getElementById("days"),
+
+        document.getElementById("type"),
+
+        document.getElementById("upgradeBH")
+
+    ];
+
+
+    inputs.forEach(input => {
+
+        input.addEventListener("change", xuLy);
+
+        input.addEventListener("input", xuLy);
+
+    });
+
+
+    /* =====================================================
+       XÁC ĐỊNH TRƯỜNG HỢP
+    ====================================================== */
+
+    function xuLy() {
+
+        const baoHanh =
+            document.getElementById("baoHanh").value;
+
+        const days =
+            Number(document.getElementById("days").value);
+
+        const type =
+            document.getElementById("type").value;
+
+        const upgradeBH =
+            document.getElementById("upgradeBH").value;
+
+
+        const caseEl =
+            document.getElementById("case");
+
+        const actionEl =
+            document.getElementById("action");
+
+        const formulaEl =
+            document.getElementById("formula");
+
+        const warningEl =
+            document.getElementById("warning");
+
+        const successEl =
+            document.getElementById("success");
+
+
+        // Reset
+
+        currentCase = null;
+
+        formulaEl.classList.add("hidden");
+
+        warningEl.classList.add("hidden");
+
+        successEl.classList.add("hidden");
+
+        document
+            .getElementById("calculator")
+            .classList.add("hidden");
+
+        document
+            .getElementById("finalPrice")
+            .classList.add("hidden");
+
+
+        caseEl.innerHTML = "";
+
+        actionEl.innerHTML = "";
+
+
+        if (!baoHanh || !days || !type) {
+
+            caseEl.innerHTML =
+                "Hãy chọn đầy đủ điều kiện.";
+
+            actionEl.innerHTML =
+                "Chọn tình trạng BH, số ngày và hình thức bán lại.";
+
+            return;
+        }
+
+
+
+
+        if (
+            baoHanh === "buy" &&
+            type === "upgrade"
+        ) {
+
+            currentCase = 7;
+
+            caseEl.innerHTML =
+                "🟢 TRƯỜNG HỢP 7 – MUA BHMR + LÊN ĐỜI";
+
+            actionEl.innerHTML =
+                "<b>Hướng xử lý:</b><br>" +
+                "Chuyển <b>100% giá gói BH</b> sang máy mới " +
+                "để bù chênh lệch.";
+
+            formulaEl.innerHTML =
+                "Giá nhập lại = Giá MIN − % + 100% giá BH";
+
+            formulaEl.classList.remove("hidden");
+
+            warningEl.innerHTML =
+                "⚠️ Trường hợp lên đời cần Quản lý Shop duyệt.";
+
+            warningEl.classList.remove("hidden");
+
+            hienMayTinh();
+
+            return;
+        }
+
+
+        if (baoHanh === "add") {
+
+            currentCase = 6;
+
+            caseEl.innerHTML =
+                "🔴 TRƯỜNG HỢP 6 – KHÁCH CHỈ THÊM TIỀN";
+
+            if (days <= 7) {
+
+                actionEl.innerHTML =
+                    "<b>Trong 7 ngày:</b><br>" +
+                    "Hoàn <b>50% số tiền khách đã thêm</b>.";
+
+                formulaEl.innerHTML =
+                    "Giá nhập lại = (SEP + BH có sẵn) − % + 50% tiền khách thêm";
+
+                formulaEl.classList.remove("hidden");
+
+                successEl.innerHTML =
+                    "✅ Hoàn 50% tiền khách thêm.";
+
+                successEl.classList.remove("hidden");
+
+            } else {
+
+                actionEl.innerHTML =
+                    "<b>Từ ngày 8:</b><br>" +
+                    "Không hoàn lại tiền khách đã thêm.";
+
+                formulaEl.innerHTML =
+                    "Giá nhập lại = (SEP + BH có sẵn) − %";
+
+                formulaEl.classList.remove("hidden");
+
+                warningEl.innerHTML =
+                    "⚠️ Từ ngày 8: không hoàn tiền khách thêm.";
+
+                warningEl.classList.remove("hidden");
+            }
+
+            hienMayTinh();
+
+            return;
+        }
+
+
+
+
+        if (
+            baoHanh === "gift" &&
+            upgradeBH === "yes"
+        ) {
+
+            currentCase = 5;
+
+            caseEl.innerHTML =
+                "🔵 TRƯỜNG HỢP 5 – BH TẶNG + NÂNG CẤP";
+
+            if (days <= 7) {
+
+                actionEl.innerHTML =
+                    "<b>Trong 7 ngày:</b><br>" +
+                    "Hoàn <b>50% phí nâng cấp gói BH</b>.";
+
+                formulaEl.innerHTML =
+                    "Giá nhập lại = (SEP + BH tặng) − % + 50% phí nâng cấp";
+
+                formulaEl.classList.remove("hidden");
+
+                successEl.innerHTML =
+                    "✅ Hoàn 50% phí nâng cấp.";
+
+                successEl.classList.remove("hidden");
+
+            } else {
+
+                actionEl.innerHTML =
+                    "<b>Từ ngày 8:</b><br>" +
+                    "Không hoàn phí nâng cấp.";
+
+                formulaEl.innerHTML =
+                    "Giá nhập lại = (SEP + BH tặng) − %";
+
+                formulaEl.classList.remove("hidden");
+
+                warningEl.innerHTML =
+                    "⚠️ Không hoàn phí nâng cấp từ ngày 8.";
+
+                warningEl.classList.remove("hidden");
+            }
+
+            hienMayTinh();
+
+            return;
+        }
+
+
+
+
+        if (baoHanh === "gift") {
+
+            currentCase = 4;
+
+            caseEl.innerHTML =
+                "🟣 TRƯỜNG HỢP 4 – ĐƯỢC TẶNG BHMR";
+
+            actionEl.innerHTML =
+                "Gói BH được tặng không hoàn tiền riêng. " +
+                "Cộng giá gói BH vào giá thanh toán SEP " +
+                "trước khi tính.";
+
+            formulaEl.innerHTML =
+                "Giá nhập lại = (Giá SEP + BH tặng) − %";
+
+            formulaEl.classList.remove("hidden");
+
+            hienMayTinh();
+
+            return;
+        }
+
+
+
+
+        if (baoHanh === "buy") {
+
+            if (days <= 7) {
+
+                currentCase = 2;
+
+                caseEl.innerHTML =
+                    "🟠 TRƯỜNG HỢP 2 – MUA BHMR, BÁN ≤ 7 NGÀY";
+
+                actionEl.innerHTML =
+                    "<b>Hướng xử lý:</b><br>" +
+                    "Hoàn <b>50% giá gói BH</b>.";
+
+                formulaEl.innerHTML =
+                    "Giá nhập lại = Giá MIN − % + 50% giá BH";
+
+                formulaEl.classList.remove("hidden");
+
+                successEl.innerHTML =
+                    "✅ Hoàn 50% giá gói BH.";
+
+                successEl.classList.remove("hidden");
+
+            } else {
+
+                currentCase = 3;
+
+                caseEl.innerHTML =
+                    "🔵 TRƯỜNG HỢP 3 – MUA BHMR, BÁN TỪ NGÀY 8";
+
+                actionEl.innerHTML =
+                    "<b>Hướng xử lý:</b><br>" +
+                    "Không hoàn lại giá gói BH.";
+
+                formulaEl.innerHTML =
+                    "Giá nhập lại = Giá MIN − %";
+
+                formulaEl.classList.remove("hidden");
+
+                warningEl.innerHTML =
+                    "⚠️ Từ ngày 8: không hoàn giá gói BH.";
+
+                warningEl.classList.remove("hidden");
+            }
+
+            hienMayTinh();
+
+            return;
+        }
+
+
+
+
+        if (baoHanh === "none") {
+
+            currentCase = 1;
+
+            caseEl.innerHTML =
+                "🟢 TRƯỜNG HỢP 1 – KHÔNG MUA BHMR";
+
+            actionEl.innerHTML =
+                "Xử lý theo chính sách Buy Back thông thường.";
+
+            formulaEl.innerHTML =
+                "Giá nhập lại = Giá máy MIN − 30% / 20% / 15%";
+
+            formulaEl.classList.remove("hidden");
+
+            hienMayTinh();
+
+            return;
+        }
+
+    }
+
+
+
+
+    function hienMayTinh() {
+
+        document
+            .getElementById("calculator")
+            .classList.remove("hidden");
+
+
+
+
+        const fieldMin =
+            document.getElementById("fieldGiaMin");
+
+        const fieldSep =
+            document.getElementById("fieldSep");
+
+        const fieldBH =
+            document.getElementById("fieldBaoHanhGia");
+
+        const fieldNangCap =
+            document.getElementById("fieldNangCap");
+
+        const fieldKhachThem =
+            document.getElementById("fieldKhachThem");
+
+
+
+        fieldMin.classList.add("hidden");
+
+        fieldSep.classList.add("hidden");
+
+        fieldBH.classList.add("hidden");
+
+        fieldNangCap.classList.add("hidden");
+
+        fieldKhachThem.classList.add("hidden");
+
+
+
+
+        if (currentCase === 1) {
+
+            fieldMin.classList.remove("hidden");
+
+        }
+
+
+
+
+        if (currentCase === 2) {
+
+            fieldMin.classList.remove("hidden");
+
+            fieldBH.classList.remove("hidden");
+
+            document.getElementById(
+                "labelBaoHanhGia"
+            ).innerText =
+                "Giá gói BH";
+
+        }
+
+
+
+
+        if (currentCase === 3) {
+
+            fieldMin.classList.remove("hidden");
+
+        }
+
+
+
+
+        if (currentCase === 4) {
+
+            fieldSep.classList.remove("hidden");
+
+            fieldBH.classList.remove("hidden");
+
+            document.getElementById(
+                "labelBaoHanhGia"
+            ).innerText =
+                "Giá BH được tặng";
+
+        }
+
+
+
+        if (currentCase === 5) {
+
+            fieldSep.classList.remove("hidden");
+
+            fieldBH.classList.remove("hidden");
+
+            fieldNangCap.classList.remove("hidden");
+
+            document.getElementById(
+                "labelBaoHanhGia"
+            ).innerText =
+                "Giá BH được tặng";
+
+        }
+
+
+
+
+        if (currentCase === 6) {
+
+            fieldSep.classList.remove("hidden");
+
+            fieldBH.classList.remove("hidden");
+
+            fieldKhachThem.classList.remove("hidden");
+
+            document.getElementById(
+                "labelBaoHanhGia"
+            ).innerText =
+                "Giá BH có sẵn";
+
+        }
+
+
+
+        if (currentCase === 7) {
+
+            fieldMin.classList.remove("hidden");
+
+            fieldBH.classList.remove("hidden");
+
+            document.getElementById(
+                "labelBaoHanhGia"
+            ).innerText =
+                "Giá gói BH";
+
+        }
+
+    }
+
+
+
+    function tinhGia() {
+
+        if (!currentCase) {
+
+            alert("Vui lòng chọn đầy đủ điều kiện trước.");
+
+            return;
+        }
+
+
+        const giaMin =
+            Number(
+                document.getElementById("giaMin").value
+            ) || 0;
+
+
+        const giaSep =
+            Number(
+                document.getElementById("giaSep").value
+            ) || 0;
+
+
+        const giaBH =
+            Number(
+                document.getElementById("giaBaoHanh").value
+            ) || 0;
+
+
+        const phanTram =
+            Number(
+                document.getElementById("phanTram").value
+            );
+
+
+        const phiNangCap =
+            Number(
+                document.getElementById("phiNangCap").value
+            ) || 0;
+
+
+        const tienKhachThem =
+            Number(
+                document.getElementById("tienKhachThem").value
+            ) || 0;
+
+
+        const tyLe =
+            phanTram / 100;
+
+
+        let giaNhap = 0;
+
+        let detail = "";
+
+
+        /* =================================================
+           CASE 1
+        ================================================= */
+
+        if (currentCase === 1) {
+
+            if (giaMin <= 0) {
+
+                alert("Vui lòng nhập Giá máy MIN.");
+
+                return;
+            }
+
+            const tienTru =
+                giaMin * tyLe;
+
+            giaNhap =
+                giaMin - tienTru;
+
+
+            detail =
+                formatMoney(giaMin) +
+                " − " +
+                formatMoney(tienTru) +
+                " (" + phanTram + "%)";
+
+        }
+
+
+        /* =================================================
+           CASE 2
+        ================================================= */
+
+        else if (currentCase === 2) {
+
+            if (giaMin <= 0 || giaBH <= 0) {
+
+                alert("Vui lòng nhập Giá máy MIN và Giá gói BH.");
+
+                return;
+            }
+
+            const tienTru =
+                giaMin * tyLe;
+
+            const hoanBH =
+                giaBH * 0.5;
+
+            giaNhap =
+                giaMin - tienTru + hoanBH;
+
+
+            detail =
+                formatMoney(giaMin) +
+                " − " +
+                formatMoney(tienTru) +
+                " + 50% BH (" +
+                formatMoney(hoanBH) +
+                ")";
+
+        }
+
+
+        /* =================================================
+           CASE 3
+        ================================================= */
+
+        else if (currentCase === 3) {
+
+            if (giaMin <= 0) {
+
+                alert("Vui lòng nhập Giá máy MIN.");
+
+                return;
+            }
+
+            const tienTru =
+                giaMin * tyLe;
+
+            giaNhap =
+                giaMin - tienTru;
+
+
+            detail =
+                formatMoney(giaMin) +
+                " − " +
+                formatMoney(tienTru) +
+                " (" + phanTram + "%)";
+
+        }
+
+
+        /* =================================================
+           CASE 4
+        ================================================= */
+
+        else if (currentCase === 4) {
+
+            if (giaSep <= 0 || giaBH <= 0) {
+
+                alert(
+                    "Vui lòng nhập Giá SEP và Giá BH được tặng."
+                );
+
+                return;
+            }
+
+            const tong =
+                giaSep + giaBH;
+
+            const tienTru =
+                tong * tyLe;
+
+            giaNhap =
+                tong - tienTru;
+
+
+            detail =
+                "(" +
+                formatMoney(giaSep) +
+                " + " +
+                formatMoney(giaBH) +
+                ")" +
+                " − " +
+                formatMoney(tienTru) +
+                " (" + phanTram + "%)";
+
+        }
+
+
+        /* =================================================
+           CASE 5
+        ================================================= */
+
+        else if (currentCase === 5) {
+
+            if (
+                giaSep <= 0 ||
+                giaBH <= 0
+            ) {
+
+                alert(
+                    "Vui lòng nhập Giá SEP và Giá BH được tặng."
+                );
+
+                return;
+            }
+
+            const tong =
+                giaSep + giaBH;
+
+            const tienTru =
+                tong * tyLe;
+
+            let hoanNangCap = 0;
+
+            /*
+                Chỉ hoàn 50% nếu bán trong 7 ngày
+            */
+
+            const days =
+                Number(
+                    document.getElementById("days").value
+                );
+
+            if (days <= 7) {
+
+                hoanNangCap =
+                    phiNangCap * 0.5;
+
+            }
+
+            giaNhap =
+                tong -
+                tienTru +
+                hoanNangCap;
+
+
+            detail =
+                "(" +
+                formatMoney(giaSep) +
+                " + " +
+                formatMoney(giaBH) +
+                ")" +
+                " − " +
+                formatMoney(tienTru);
+
+            if (hoanNangCap > 0) {
+
+                detail +=
+                    " + 50% nâng cấp (" +
+                    formatMoney(hoanNangCap) +
+                    ")";
+
+            }
+
+        }
+
+
+        /* =================================================
+           CASE 6
+        ================================================= */
+
+        else if (currentCase === 6) {
+
+            if (
+                giaSep <= 0 ||
+                giaBH <= 0
+            ) {
+
+                alert(
+                    "Vui lòng nhập Giá SEP và Giá BH có sẵn."
+                );
+
+                return;
+            }
+
+            const tong =
+                giaSep + giaBH;
+
+            const tienTru =
+                tong * tyLe;
+
+            let hoanTienThem = 0;
+
+
+            const days =
+                Number(
+                    document.getElementById("days").value
+                );
+
+
+            if (days <= 7) {
+
+                hoanTienThem =
+                    tienKhachThem * 0.5;
+
+            }
+
+
+            giaNhap =
+                tong -
+                tienTru +
+                hoanTienThem;
+
+
+            detail =
+                "(" +
+                formatMoney(giaSep) +
+                " + " +
+                formatMoney(giaBH) +
+                ")" +
+                " − " +
+                formatMoney(tienTru);
+
+
+            if (hoanTienThem > 0) {
+
+                detail +=
+                    " + 50% tiền thêm (" +
+                    formatMoney(hoanTienThem) +
+                    ")";
+
+            }
+
+        }
+
+
+        /* =================================================
+           CASE 7
+        ================================================= */
+
+        else if (currentCase === 7) {
+
+            if (
+                giaMin <= 0 ||
+                giaBH <= 0
+            ) {
+
+                alert(
+                    "Vui lòng nhập Giá máy MIN và Giá gói BH."
+                );
+
+                return;
+            }
+
+            const tienTru =
+                giaMin * tyLe;
+
+            giaNhap =
+                giaMin -
+                tienTru +
+                giaBH;
+
+
+            detail =
+                formatMoney(giaMin) +
+                " − " +
+                formatMoney(tienTru) +
+                " + 100% BH (" +
+                formatMoney(giaBH) +
+                ")";
+
+        }
+
+
+        /* =================================================
+           HIỂN THỊ KẾT QUẢ
+        ================================================= */
+
+        document
+            .getElementById("price")
+            .innerText =
+            formatMoney(giaNhap);
+
+
+        document
+            .getElementById("calculationDetail")
+            .innerHTML =
+            detail;
+
+
+        document
+            .getElementById("finalPrice")
+            .classList.remove("hidden");
+
+
+        // Cuộn nhẹ xuống kết quả
+
+        document
+            .getElementById("finalPrice")
+            .scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+    }
+
+
+    /* =====================================================
+       FORMAT TIỀN
+    ====================================================== */
+
+    function formatMoney(number) {
+
+        return new Intl.NumberFormat(
+            "vi-VN"
+        ).format(
+            Math.round(number)
+        ) + "đ";
+
+    }
+
+
+    /* =====================================================
+       RESET
+    ====================================================== */
+
+    function resetForm() {
+
+        document
+            .getElementById("baoHanh")
+            .value = "";
+
+        document
+            .getElementById("days")
+            .value = "";
+
+        document
+            .getElementById("type")
+            .value = "";
+
+        document
+            .getElementById("upgradeBH")
+            .value = "no";
+
+
+        document
+            .getElementById("giaMin")
+            .value = "";
+
+        document
+            .getElementById("giaSep")
+            .value = "";
+
+        document
+            .getElementById("giaBaoHanh")
+            .value = "";
+
+        document
+            .getElementById("phiNangCap")
+            .value = "";
+
+        document
+            .getElementById("tienKhachThem")
+            .value = "";
+
+
+        document
+            .getElementById("finalPrice")
+            .classList.add("hidden");
+
+
+        currentCase = null;
+
+        xuLy();
+
+    }</script>
+
+</body>
+</html>
